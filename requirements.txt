@@ -168,7 +168,7 @@ tensor2tensor==1.15.7
 tensorboard==2.8.0
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
-tensorflow==2.8.0
+tensorflow==2.8.1
 tensorflow-addons==0.17.0
 tensorflow-datasets==4.5.2
 tensorflow-gan==2.1.0
