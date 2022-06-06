@@ -26,7 +26,7 @@ from typing import Mapping, Optional, Text, Tuple
 from absl import app
 from absl import flags
 from absl import logging
-import dataset
+from perceiver_ar import dataset
 import dill
 import haiku as hk
 import jax
@@ -35,11 +35,11 @@ from jaxline import base_config
 from jaxline import experiment
 from jaxline import platform
 from jaxline import utils
-import losses
+from perceiver_ar import losses
 from ml_collections import config_dict
 import numpy as np
 import optax
-import perceiver_ar
+from perceiver_ar import perceiver_ar_model
 import tensorflow as tf
 
 FLAGS = flags.FLAGS
@@ -55,7 +55,7 @@ def events_to_shifted_inputs_and_targets(events):
   # target_events = [b, c, d, 0]
 
   # First truncate input_events. Otherwise the sequence would be 1 too long.
-  input_events = jax.vmap(perceiver_ar.truncate_sequence)(events)[:, :-1]
+  input_events = jax.vmap(perceiver_ar_model.truncate_sequence)(events)[:, :-1]
   target_events = events[:, 1:]
   return input_events, target_events
 
@@ -481,7 +481,7 @@ class Experiment(experiment.AbstractExperiment):
       z_index_dim: Optional[int] = None,
   ) -> jnp.ndarray:
     del context  # Unused
-    model = perceiver_ar.PerceiverAR(
+    model = perceiver_ar_model.PerceiverAR(
         num_classes=self._num_classes(),
         input_idx_size=self._input_idx_size(),
         max_context_length=self.config.data.max_context_length,
@@ -968,7 +968,7 @@ class Experiment(experiment.AbstractExperiment):
     else:
       @jax.vmap
       def get_targets_and_logits_incremental(events, raw_logits):
-        length = perceiver_ar.get_sequence_length(events)
+        length = perceiver_ar_model.get_sequence_length(events)
         last_token_idx = jnp.maximum(0, length - 1)
 
         # Decoding happens only at latent locations: take the final latent,

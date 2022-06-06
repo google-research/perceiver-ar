@@ -16,8 +16,8 @@
 
 from absl.testing import absltest
 from absl.testing import parameterized
-import dataset
 import numpy as np
+from perceiver_ar import dataset
 import tensorflow as tf
 
 

@@ -16,13 +16,13 @@
 
 from absl.testing import absltest
 from absl.testing import parameterized
-import dataset
+from perceiver_ar import dataset
 import haiku as hk
 import jax
 import jax.numpy as jnp
 import numpy as np
-import perceiver_ar
-import sample_utils
+from perceiver_ar import perceiver_ar_model
+from perceiver_ar import sample_utils
 
 
 def generate_inputs(input_index_dim, num_invalid_inputs, batch_size=1):
@@ -38,24 +38,24 @@ class PerceiverARTest(parameterized.TestCase):
 
   def test_get_sequence_length(self):
     self.assertEqual(
-        3, perceiver_ar.get_sequence_length(jnp.array([1, 2, 3, 0])))
+        3, perceiver_ar_model.get_sequence_length(jnp.array([1, 2, 3, 0])))
     self.assertEqual(
-        4, perceiver_ar.get_sequence_length(jnp.array([1, 2, 3, 4])))
+        4, perceiver_ar_model.get_sequence_length(jnp.array([1, 2, 3, 4])))
     self.assertEqual(
-        0, perceiver_ar.get_sequence_length(jnp.array([0, 0, 0, 0])))
+        0, perceiver_ar_model.get_sequence_length(jnp.array([0, 0, 0, 0])))
 
   def test_truncate_sequence(self):
     np.testing.assert_array_equal(
-        perceiver_ar.truncate_sequence(jnp.array([1, 2, 3, 4])),
+        perceiver_ar_model.truncate_sequence(jnp.array([1, 2, 3, 4])),
         [1, 2, 3, 0])
     np.testing.assert_array_equal(
-        perceiver_ar.truncate_sequence(jnp.array([1, 2, 3, 0])),
+        perceiver_ar_model.truncate_sequence(jnp.array([1, 2, 3, 0])),
         [1, 2, 0, 0])
     np.testing.assert_array_equal(
-        perceiver_ar.truncate_sequence(jnp.array([1, 0, 0, 0])),
+        perceiver_ar_model.truncate_sequence(jnp.array([1, 0, 0, 0])),
         [0, 0, 0, 0])
     np.testing.assert_array_equal(
-        perceiver_ar.truncate_sequence(jnp.array([0, 0, 0, 0])),
+        perceiver_ar_model.truncate_sequence(jnp.array([0, 0, 0, 0])),
         [0, 0, 0, 0])
 
   def test_make_positions_terminal_relative(self):
@@ -85,7 +85,7 @@ class PerceiverARTest(parameterized.TestCase):
     pos_seq = np.array(pos_seq)
     expected_output = np.array(expected_output)
 
-    output = perceiver_ar.make_positions_terminal_relative(pos_seq, input_seq)
+    output = perceiver_ar_model.make_positions_terminal_relative(pos_seq, input_seq)
     np.testing.assert_array_equal(output, expected_output)
 
   # ----------------------------------
@@ -105,7 +105,7 @@ class PerceiverARTest(parameterized.TestCase):
 
     inputs = generate_inputs(input_index_dim=10, num_invalid_inputs=0)
 
-    masks, latent_last_steps = perceiver_ar.make_block_causal_masks(
+    masks, latent_last_steps = perceiver_ar_model.make_block_causal_masks(
         inputs=inputs,
         latent_index_dim=latent_index_dim,
         batch_size=batch_size,
@@ -142,7 +142,7 @@ class PerceiverARTest(parameterized.TestCase):
 
     inputs = generate_inputs(input_index_dim=10, num_invalid_inputs=9)
 
-    masks, latent_last_steps = perceiver_ar.make_block_causal_masks(
+    masks, latent_last_steps = perceiver_ar_model.make_block_causal_masks(
         inputs=inputs,
         latent_index_dim=latent_index_dim,
         batch_size=batch_size,
@@ -178,7 +178,7 @@ class PerceiverARTest(parameterized.TestCase):
 
     inputs = generate_inputs(input_index_dim=10, num_invalid_inputs=6)
 
-    masks, latent_last_steps = perceiver_ar.make_block_causal_masks(
+    masks, latent_last_steps = perceiver_ar_model.make_block_causal_masks(
         inputs=inputs,
         latent_index_dim=latent_index_dim,
         batch_size=batch_size,
@@ -214,7 +214,7 @@ class PerceiverARTest(parameterized.TestCase):
 
     inputs = generate_inputs(input_index_dim=10, num_invalid_inputs=3)
 
-    masks, latent_last_steps = perceiver_ar.make_block_causal_masks(
+    masks, latent_last_steps = perceiver_ar_model.make_block_causal_masks(
         inputs=inputs,
         latent_index_dim=latent_index_dim,
         batch_size=batch_size,
@@ -259,7 +259,7 @@ class PerceiverARTest(parameterized.TestCase):
         input_index_dim=input_index_dim,
         num_invalid_inputs=num_invalid_inputs)
 
-    _, latent_last_steps = perceiver_ar.make_block_causal_masks(
+    _, latent_last_steps = perceiver_ar_model.make_block_causal_masks(
         inputs=inputs,
         latent_index_dim=latent_index_dim,
         batch_size=batch_size,
@@ -285,7 +285,7 @@ class PerceiverARTest(parameterized.TestCase):
 
     def forward_fn(inputs_q, inputs_kv, mask, q_positions, kv_positions,
                    use_chunked, is_training):
-      attn = perceiver_ar.Attention(
+      attn = perceiver_ar_model.Attention(
           dropout_prob=0.1,
           position_encoding_type=position_encoding_type,
           fraction_to_rotate=0.5,
@@ -420,7 +420,7 @@ class PerceiverARTest(parameterized.TestCase):
         final_layer_init_zeros=False)
 
     def forward_fn(inputs, input_idxs, memory=None, z_index_dim=None):
-      model = perceiver_ar.PerceiverAR(
+      model = perceiver_ar_model.PerceiverAR(
           num_classes,
           input_idx_size,
           max_context_length,
@@ -566,7 +566,7 @@ class PerceiverARTest(parameterized.TestCase):
         final_layer_init_zeros=False)
 
     def forward_fn(inputs, input_idxs, memory=None, z_index_dim=None):
-      model = perceiver_ar.PerceiverAR(
+      model = perceiver_ar_model.PerceiverAR(
           num_classes,
           input_idx_size,
           max_context_length,

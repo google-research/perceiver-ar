@@ -17,7 +17,7 @@
 import jax
 import jax.numpy as jnp
 
-import perceiver_ar
+from perceiver_ar import perceiver_ar_model
 
 
 # -----------------------------
@@ -76,7 +76,7 @@ def initialize_memory(
     else:
       raise ValueError('Unknown memory_type: {memory_type}')
 
-    memory.append(perceiver_ar.AttentionState(
+    memory.append(perceiver_ar_model.AttentionState(
         k=k, v=v, kv_positions=kv_positions, memory_mask=memory_mask))
 
   return memory
