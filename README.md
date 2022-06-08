@@ -20,6 +20,10 @@ First, install dependencies following these instructions:
 
 ## Training
 
+As an example of the model, a 32-position version of the Copy Task from our
+paper can be trained using only a local CPU.
+
+
 ```
 PYTHONPATH=.::$PYTHONPATH python experiment.py  --config=experiment.py:random_mirrored_32
 ```
@@ -60,10 +64,17 @@ To run inference in a local Jupyter notebook:
 jupyter notebook
 ```
 
-Load `inference.ipynb`.
+Load `inference.ipynb` and follow the instructions in the notebook.
 
-Set `modality`, `sweep_name`, and `checkpoint_base` appropriately and run all
-of the cells.
+### Pretrained Copy Task
+
+The notebook also supports loading a pretrained checkpoint for the
+131k-position copy task used in our paper. This model is fairly large,
+so inferring more than a few positions will likely require a large
+accelerator. The notebook has been tested to run on a GCP
+[TPU VM](https://cloud.google.com/tpu/docs/users-guide-tpu-vm) using a
+TPU v3-8.
+
 
 ## Unit Tests
 
