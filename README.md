@@ -25,7 +25,8 @@ paper can be trained using only a local CPU.
 
 
 ```
-PYTHONPATH=.::$PYTHONPATH python experiment.py  --config=experiment.py:random_mirrored_32
+PYTHONPATH=.::$PYTHONPATH python perceiver_ar/experiment.py \
+  --config=perceiver_ar/experiment.py:random_mirrored_32
 ```
 
 By default, checkpoints and events will be saved to `/tmp/perceiver_ar`.
@@ -48,7 +49,8 @@ To evaluate the latest saved checkpoint:
 CHECKPOINTS="/tmp/perceiver_ar"
 LATEST_CHECKPOINT="${CHECKPOINTS}/models/latest/$(ls -tr ${CHECKPOINTS}/models/latest/ | tail -n 1)"
 echo "Evaluating ${LATEST_CHECKPOINT}"
-PYTHONPATH=.::$PYTHONPATH python experiment.py  --config=experiment.py:random_mirrored_32 \
+PYTHONPATH=.::$PYTHONPATH python perceiver_ar/experiment.py \
+  --config=perceiver_ar/experiment.py:random_mirrored_32 \
   --jaxline_mode=eval \
   --config.one_off_evaluate=True \
   --config.restore_path="${LATEST_CHECKPOINT}"
