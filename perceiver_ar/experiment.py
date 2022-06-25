@@ -1046,7 +1046,7 @@ class Experiment(experiment.AbstractExperiment):
           is_training=False,
           batch_dims=[jax.local_device_count(), per_device_batch_size],
           max_examples=self.config.evaluation.max_examples)
-    return self._eval_input, self._dataset.word_count(split)
+    return self._eval_input
 
   def _eval_epoch(self, rng, global_step):
     """Evaluates an epoch."""
