@@ -6,7 +6,10 @@ maintaining end-to-end causal masking. Perceiver AR can directly attend to over
 a hundred thousand tokens, enabling practical long-context density estimation
 without the need for hand-crafted sparsity patterns or memory mechanisms.
 
-For more details, see our ICML paper: https://arxiv.org/abs/2202.07765
+For more details, see our ICML 2022 paper: https://arxiv.org/abs/2202.07765
+
+An implementation is also available for [T5X/Flaxformer](
+https://github.com/google/flaxformer/tree/main/flaxformer/architectures/perceiver_ar).
 
 ## Setup
 
