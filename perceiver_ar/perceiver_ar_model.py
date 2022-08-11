@@ -146,7 +146,7 @@ def generate_sinusoidal_features(size,
 
 def generate_linear_features(size,
                              max_len=2048):
-  """1D Sinusoidal Position Embedding Initializer.
+  """1D Linear Position Embedding Initializer.
 
   Args:
     size: embedding size.
