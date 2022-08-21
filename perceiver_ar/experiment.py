@@ -847,8 +847,8 @@ class Experiment(experiment.AbstractExperiment):
       grads, (loss_scalars, state) = grad_loss_fn(params, state,
                                                   microbatch_input,
                                                   grad_rng[loop_cnt])
-      grads_accum = jax.tree_multimap(jnp.add, grads_accum, grads)
-      loss_scalars_accum = jax.tree_multimap(jnp.add, loss_scalars_accum,
+      grads_accum = jax.tree_util.tree_map(jnp.add, grads_accum, grads)
+      loss_scalars_accum = jax.tree_util.tree_map(jnp.add, loss_scalars_accum,
                                              loss_scalars)
       return grads_accum, loss_scalars_accum, state
 
@@ -1016,7 +1016,7 @@ class Experiment(experiment.AbstractExperiment):
     batch_scalars = jax.tree_map(jnp.sum, batch_scalars)
 
     # Add to previous results.
-    return jax.tree_multimap(jnp.add, batch_scalars, scalars)
+    return jax.tree_util.tree_map(jnp.add, batch_scalars, scalars)
 
   def _sum_eval_scalars(self, scalars: Scalars):
     # Sum scalars across hosts.
