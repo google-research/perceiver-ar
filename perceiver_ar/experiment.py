@@ -42,6 +42,8 @@ import optax
 from perceiver_ar import perceiver_ar_model
 import tensorflow as tf
 
+tf.config.set_visible_devices([], "GPU")
+
 FLAGS = flags.FLAGS
 
 OptState = Tuple[optax.TraceState, optax.ScaleByScheduleState, optax.ScaleState]
