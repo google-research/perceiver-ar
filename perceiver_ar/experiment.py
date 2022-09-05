@@ -42,6 +42,7 @@ import optax
 from perceiver_ar import perceiver_ar_model
 import tensorflow as tf
 
+# Ensure TensorFlow doesn't use entire GPU
 tf.config.set_visible_devices([], "GPU")
 
 FLAGS = flags.FLAGS
