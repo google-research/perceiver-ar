@@ -83,7 +83,7 @@ pluggy==1.0.0
 prometheus-client==0.14.1
 promise==2.3
 prompt-toolkit==3.0.29
-protobuf==3.19.4
+protobuf==3.19.5
 psutil==5.9.1
 ptyprocess==0.7.0
 py==1.11.0
