@@ -44,7 +44,7 @@ jax==0.3.13
 jaxlib==0.3.10
 jaxline==0.0.5
 jedi==0.18.1
-Jinja2==3.1.2
+Jinja2==3.1.3
 jmp==0.0.2
 jsonschema==4.6.0
 jupyter==1.0.0
