@@ -53,7 +53,7 @@ jupyter-console==6.4.3
 jupyter-core==4.10.0
 jupyterlab-pygments==0.2.2
 jupyterlab-widgets==1.1.0
-keras==2.9.0
+keras==3.9.0
 Keras-Preprocessing==1.1.2
 kiwisolver==1.4.2
 libclang==14.0.1
